@@ -1,4 +1,4 @@
-package ru.ifmo.ctd.evdokimov.simple;
+package ru.ifmo.ctd.evdokimov.sandbox;
 
 public class Main {
     public static void main(String[] args) {
