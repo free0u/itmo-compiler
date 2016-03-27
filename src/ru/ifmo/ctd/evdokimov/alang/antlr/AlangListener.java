@@ -138,6 +138,16 @@ public interface AlangListener extends ParseTreeListener {
 	 */
 	void exitIfStatement(AlangParser.IfStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AlangParser#readStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadStatement(AlangParser.ReadStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#readStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadStatement(AlangParser.ReadStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AlangParser#printStatement}.
 	 * @param ctx the parse tree
 	 */
@@ -147,16 +157,6 @@ public interface AlangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrintStatement(AlangParser.PrintStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AlangParser#writeStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterWriteStatement(AlangParser.WriteStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AlangParser#writeStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitWriteStatement(AlangParser.WriteStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code MulExpr}
 	 * labeled alternative in {@link AlangParser#expr}.

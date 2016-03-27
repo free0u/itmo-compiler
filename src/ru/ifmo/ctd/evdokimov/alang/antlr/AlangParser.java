@@ -25,19 +25,19 @@ public class AlangParser extends Parser {
 		RULE_program = 0, RULE_globalVars = 1, RULE_funcs = 2, RULE_topLevelDecl = 3, 
 		RULE_varDecl = 4, RULE_type = 5, RULE_funcDef = 6, RULE_scope = 7, RULE_statements = 8, 
 		RULE_statement = 9, RULE_assign = 10, RULE_whileStatement = 11, RULE_ifStatement = 12, 
-		RULE_printStatement = 13, RULE_writeStatement = 14, RULE_expr = 15, RULE_var = 16, 
+		RULE_readStatement = 13, RULE_printStatement = 14, RULE_expr = 15, RULE_var = 16, 
 		RULE_funcName = 17, RULE_intType = 18, RULE_boolType = 19, RULE_voidType = 20, 
 		RULE_boolConst = 21;
 	public static final String[] ruleNames = {
 		"program", "globalVars", "funcs", "topLevelDecl", "varDecl", "type", "funcDef", 
 		"scope", "statements", "statement", "assign", "whileStatement", "ifStatement", 
-		"printStatement", "writeStatement", "expr", "var", "funcName", "intType", 
+		"readStatement", "printStatement", "expr", "var", "funcName", "intType", 
 		"boolType", "voidType", "boolConst"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "';'", "'()'", "'{'", "'}'", "'='", "'while'", "'('", "')'", "'if'", 
-		"'else'", "'print'", "'write'", "'+'", "'-'", "'*'", "'/'", "'<'", "'>'", 
+		"'else'", "'read'", "'print'", "'+'", "'-'", "'*'", "'/'", "'<'", "'>'", 
 		"'int'", "'bool'", "'void'", "'true'", "'false'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
@@ -580,11 +580,11 @@ public class AlangParser extends Parser {
 		public WhileStatementContext whileStatement() {
 			return getRuleContext(WhileStatementContext.class,0);
 		}
-		public WriteStatementContext writeStatement() {
-			return getRuleContext(WriteStatementContext.class,0);
-		}
 		public PrintStatementContext printStatement() {
 			return getRuleContext(PrintStatementContext.class,0);
+		}
+		public ReadStatementContext readStatement() {
+			return getRuleContext(ReadStatementContext.class,0);
 		}
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -644,7 +644,7 @@ public class AlangParser extends Parser {
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(98);
-				writeStatement();
+				printStatement();
 				setState(99);
 				match(T__0);
 				}
@@ -653,7 +653,7 @@ public class AlangParser extends Parser {
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(101);
-				printStatement();
+				readStatement();
 				setState(102);
 				match(T__0);
 				}
@@ -826,27 +826,27 @@ public class AlangParser extends Parser {
 		return _localctx;
 	}
 
-	public static class PrintStatementContext extends ParserRuleContext {
+	public static class ReadStatementContext extends ParserRuleContext {
 		public VarContext var() {
 			return getRuleContext(VarContext.class,0);
 		}
-		public PrintStatementContext(ParserRuleContext parent, int invokingState) {
+		public ReadStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_printStatement; }
+		@Override public int getRuleIndex() { return RULE_readStatement; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof AlangListener ) ((AlangListener)listener).enterPrintStatement(this);
+			if ( listener instanceof AlangListener ) ((AlangListener)listener).enterReadStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof AlangListener ) ((AlangListener)listener).exitPrintStatement(this);
+			if ( listener instanceof AlangListener ) ((AlangListener)listener).exitReadStatement(this);
 		}
 	}
 
-	public final PrintStatementContext printStatement() throws RecognitionException {
-		PrintStatementContext _localctx = new PrintStatementContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_printStatement);
+	public final ReadStatementContext readStatement() throws RecognitionException {
+		ReadStatementContext _localctx = new ReadStatementContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_readStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -871,27 +871,27 @@ public class AlangParser extends Parser {
 		return _localctx;
 	}
 
-	public static class WriteStatementContext extends ParserRuleContext {
+	public static class PrintStatementContext extends ParserRuleContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public WriteStatementContext(ParserRuleContext parent, int invokingState) {
+		public PrintStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_writeStatement; }
+		@Override public int getRuleIndex() { return RULE_printStatement; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof AlangListener ) ((AlangListener)listener).enterWriteStatement(this);
+			if ( listener instanceof AlangListener ) ((AlangListener)listener).enterPrintStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof AlangListener ) ((AlangListener)listener).exitWriteStatement(this);
+			if ( listener instanceof AlangListener ) ((AlangListener)listener).exitPrintStatement(this);
 		}
 	}
 
-	public final WriteStatementContext writeStatement() throws RecognitionException {
-		WriteStatementContext _localctx = new WriteStatementContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_writeStatement);
+	public final PrintStatementContext printStatement() throws RecognitionException {
+		PrintStatementContext _localctx = new PrintStatementContext(_ctx, getState());
+		enterRule(_localctx, 28, RULE_printStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{

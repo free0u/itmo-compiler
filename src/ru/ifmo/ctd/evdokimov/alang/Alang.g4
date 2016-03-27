@@ -45,8 +45,8 @@ statement
     | assign ';'
     | ifStatement
     | whileStatement
-    | writeStatement ';'
     | printStatement ';'
+    | readStatement ';'
     ;
 
 assign
@@ -61,12 +61,12 @@ ifStatement
     : 'if' '(' expr ')' scope 'else' scope
     ;
 
-printStatement
-    : 'print' '(' var ')'
+readStatement
+    : 'read' '(' var ')'
     ;
 
-writeStatement
-    : 'write' '(' expr ')'
+printStatement
+    : 'print' '(' expr ')'
     ;
 
 
@@ -91,6 +91,6 @@ voidType : 'void';
 boolConst : ('true' | 'false' );
 
 ID : [a-zA-Z][a-zA-Z0-9]*;
-NUM : [+-]?[1-9][0-9]*;
+NUM : [+-]?[0-9][0-9]*;
 
 WS : [ \t\r\n]+ -> skip;

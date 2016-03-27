@@ -43,6 +43,12 @@ class AlangListener : AlangBaseListener() {
         scopes.pop()
     }
 
+    override fun enterPrintStatement(ctx: AlangParser.PrintStatementContext) {
+        val v = ctx.expr().text
+        val op = Op(OpType.PRINT, OpArg(ArgType.INT, v.toInt()), OpArg.empty, OpArg.empty)
+        println(op)
+    }
+
     override fun exitProgram(ctx: AlangParser.ProgramContext) {
     }
 }
