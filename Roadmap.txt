@@ -12,15 +12,19 @@ Stage 1
 FUNC <name>
 END <name>
 
-IVAR <idx>
-BVAR <idx>
-
-IADD <idx|const> <idx|const>
-ISUB <idx|const> <idx|const>
-IMUL <idx|const> <idx|const>
-IDIV <idx|const> <idx|const>
-
 ASSIGN <idx> <idx|const>
+
+IADD <idx> <idx|const> <idx|const> # int -> int > int
+ISUB <idx> <idx|const> <idx|const>
+IMUL <idx> <idx|const> <idx|const>
+IDIV <idx> <idx|const> <idx|const>
+
+IG <idx> <idx|const> <idx|const> # int -> int > bool
+IL <idx> <idx|const> <idx|const>
+
+BAND <idx> <idx|const> <idx|const> # bool -> bool -> bool
+BOR <idx> <idx|const> <idx|const>
+
 
 LABEL <label>
 JMP <label>
@@ -28,6 +32,7 @@ JMPT <idx|const> <label>
 JMPF <idx|const> <label>
 
 PRINT <idx|const>
+
 
 Stage 2
     while

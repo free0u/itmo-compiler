@@ -8,6 +8,13 @@ public class Sums {
     private static int xxx = 10;
 
     private int yyy = 100;
+    private boolean zzz = true;
+
+    public static void bar() {
+        int x = 10;
+        boolean c = x > 8;
+//        boolean e = x < 8;
+    }
 
     public static int sum2(int a, int b) {
         return sum(a, xxx);

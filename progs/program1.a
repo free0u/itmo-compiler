@@ -1,0 +1,29 @@
+int x;
+
+void main() {
+    int a;
+    int b;
+    a = 1;
+    b = 2;
+    int c;
+    c = a + b * 2;
+    c = (a + b) * 2 / 4 + 17 + a;
+
+    bool f;
+    f = true;
+    f = false;
+
+    int n;
+    int fact;
+    int i;
+
+    n = 10;
+    i = 1;
+    fact = 1;
+    while (i < n) {
+        fact = fact * i;
+        i = i + 1;
+    }
+    write(n);
+}
+

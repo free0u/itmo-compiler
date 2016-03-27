@@ -1,0 +1,15 @@
+int g;
+int f;
+
+void main() {
+    int x;
+    if (true) {
+        int y;
+        int x;
+        x = 1;
+    } else {
+        int y;
+    }
+    int z;
+    int y;
+}
