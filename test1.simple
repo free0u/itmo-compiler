@@ -1,0 +1,17 @@
+debt = -30
+debt = debt + 240
+debt = debt + 800
+debt
+
+a = 4
+b = 5
+c = a + b + 7
+c
+
+x = 1
+x = x + 1
+x
+x = x + 1
+x
+x = x + 1
+x
