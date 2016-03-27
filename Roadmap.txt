@@ -1,0 +1,38 @@
+Stage 1
+    only main function
+    int and bool
+    no global vars
+    local vars
+    expression without function calls
+    assignments
+    if (now we have scopes)
+    print
+
+
+FUNC <name>
+END <name>
+
+IVAR <idx>
+BVAR <idx>
+
+IADD <idx|const> <idx|const>
+ISUB <idx|const> <idx|const>
+IMUL <idx|const> <idx|const>
+IDIV <idx|const> <idx|const>
+
+ASSIGN <idx> <idx|const>
+
+LABEL <label>
+JMP <label>
+JMPT <idx|const> <label>
+JMPF <idx|const> <label>
+
+PRINT <idx|const>
+
+Stage 2
+    while
+    global var
+    function calls
+    comments
+    skip operator
+
