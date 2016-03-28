@@ -7,6 +7,14 @@ class OpArg(val type : ArgType,
 
     companion object {
         val empty = OpArg(ArgType.EMPTY, 0)
+
+        fun int(v : Int) : OpArg {
+            return OpArg(ArgType.INT, v)
+        }
+
+        fun idx(v : Int) : OpArg {
+            return OpArg(ArgType.INT, v)
+        }
     }
 
     override fun toString(): String{

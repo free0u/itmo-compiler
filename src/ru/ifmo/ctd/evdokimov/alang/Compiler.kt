@@ -7,7 +7,7 @@ import ru.ifmo.ctd.evdokimov.alang.antlr.AlangLexer
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangParser
 
 fun main(args: Array<String>) {
-    val lexer = AlangLexer(ANTLRFileStream("progs/print.a"))
+    val lexer = AlangLexer(ANTLRFileStream("progs/expr.a"))
     val parser = AlangParser(CommonTokenStream(lexer))
 
     val walker = ParseTreeWalker();
