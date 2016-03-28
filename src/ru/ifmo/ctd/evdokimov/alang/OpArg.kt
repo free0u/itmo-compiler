@@ -7,6 +7,14 @@ class OpArg(val type : ArgType,
 
     companion object {
         val empty = OpArg(ArgType.EMPTY, 0)
+
+        fun int(v : Int) : OpArg {
+            return OpArg(ArgType.INT, v)
+        }
+
+        fun idx(v : Int) : OpArg {
+            return OpArg(ArgType.IDX, v)
+        }
     }
 
     override fun toString(): String{
@@ -14,6 +22,9 @@ class OpArg(val type : ArgType,
             return "_"
         if (type == ArgType.INT) {
             return value.toString()
+        }
+        if (type == ArgType.IDX) {
+            return "#$value"
         }
         return "OpArg(type=$type, value=$value)"
     }

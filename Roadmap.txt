@@ -9,6 +9,8 @@ Stage 1
     print
 
 
+fixed types for Ops!
+
 FUNC <name>
 END <name>
 
@@ -19,7 +21,7 @@ ISUB <idx> <idx|const> <idx|const>
 IMUL <idx> <idx|const> <idx|const>
 IDIV <idx> <idx|const> <idx|const>
 
-IG <idx> <idx|const> <idx|const> # int -> int > bool
+IG <idx> <idx|const> <idx|const> # int -> int > bool # >
 IL <idx> <idx|const> <idx|const>
 
 BAND <idx> <idx|const> <idx|const> # bool -> bool -> bool
