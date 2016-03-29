@@ -1,0 +1,18 @@
+void main() {
+    int k;
+    int n;
+    int r;
+    n = 2;
+    k = 10;
+    r = 1;
+    while (k > 0) {
+        if (k % 2 == 1) {
+            r = r * n;
+        } else {
+        }
+        n = n * n;
+        k = k / 2;
+    }
+    print(r);
+}
+

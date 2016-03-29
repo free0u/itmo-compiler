@@ -54,12 +54,17 @@ assign
     ;
 
 whileStatement
-    : 'while' '(' expr ')' scope
+    : 'while' '(' expr ')' whileScope
     ;
 
+whileScope : scope;
+
 ifStatement
-    : 'if' '(' expr ')' scope 'else' scope
+    : 'if' '(' expr ')' ifThenScope 'else' ifElseScope
     ;
+
+ifThenScope: scope;
+ifElseScope: scope;
 
 readStatement
     : 'read' '(' var ')'
@@ -71,13 +76,15 @@ printStatement
 
 
 expr
-    : NUM                    # NumExpr
-    | boolConst              # BoolExpr
-    | var                    # VarExpr
-    | expr op=('+'|'-') expr # AddExpr
-    | expr op=('*'|'/') expr # MulExpr
-    | expr op=('<'|'>') expr # CompExpr
-    | '(' expr ')'           # ParExpr
+    : NUM                              # NumExpr
+    | boolConst                        # BoolExpr
+    | var                              # VarExpr
+    | expr op=('*'|'/'| '%') expr      # MulExpr
+    | expr op=('+'|'-') expr           # AddExpr
+    | expr op=('<'|'>'|'>='|'<=') expr # CompExpr
+    | expr op=('!='|'==') expr         # EqCompExpr
+    | expr op=('&&'|'||') expr         # BoolCompExpr
+    | '(' expr ')'                     # ParExpr
     ;
 
 

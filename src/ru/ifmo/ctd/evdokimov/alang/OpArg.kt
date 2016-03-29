@@ -15,18 +15,25 @@ class OpArg(val type : ArgType,
         fun idx(v : Int) : OpArg {
             return OpArg(ArgType.IDX, v)
         }
+
+        fun label(v : Int) : OpArg {
+            return OpArg(ArgType.LABEL, v)
+        }
+
+        fun bool(v : String) : OpArg {
+            return OpArg(ArgType.BOOL, if (v.equals("true")) 1 else 0)
+        }
     }
 
     override fun toString(): String{
-        if (type == ArgType.EMPTY)
-            return "_"
-        if (type == ArgType.INT) {
-            return value.toString()
+        when (type) {
+            ArgType.EMPTY -> return "_"
+            ArgType.INT -> return value.toString()
+            ArgType.IDX -> return "#$value"
+            ArgType.BOOL -> return "b$value"
+            ArgType.LABEL -> return "%$value"
+            else -> return "OpArg(type=$type, value=$value)"
         }
-        if (type == ArgType.IDX) {
-            return "#$value"
-        }
-        return "OpArg(type=$type, value=$value)"
     }
 
 
@@ -36,5 +43,6 @@ enum class ArgType {
     IDX,
     INT,
     BOOL,
+    LABEL,
     EMPTY
 }

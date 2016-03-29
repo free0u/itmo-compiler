@@ -1,4 +1,4 @@
-// Generated from D:/Programming/compiler-course/src/ru/ifmo/ctd/evdokimov/alang\Alang.g4 by ANTLR 4.5.1
+// Generated from D:/MyDocs/compiler-course/src/ru/ifmo/ctd/evdokimov/alang\Alang.g4 by ANTLR 4.5.1
 package ru.ifmo.ctd.evdokimov.alang.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -128,6 +128,16 @@ public interface AlangListener extends ParseTreeListener {
 	 */
 	void exitWhileStatement(AlangParser.WhileStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AlangParser#whileScope}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhileScope(AlangParser.WhileScopeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#whileScope}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhileScope(AlangParser.WhileScopeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AlangParser#ifStatement}.
 	 * @param ctx the parse tree
 	 */
@@ -137,6 +147,26 @@ public interface AlangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIfStatement(AlangParser.IfStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#ifThenScope}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfThenScope(AlangParser.IfThenScopeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#ifThenScope}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfThenScope(AlangParser.IfThenScopeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#ifElseScope}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfElseScope(AlangParser.IfElseScopeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#ifElseScope}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfElseScope(AlangParser.IfElseScopeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AlangParser#readStatement}.
 	 * @param ctx the parse tree
@@ -194,6 +224,18 @@ public interface AlangListener extends ParseTreeListener {
 	 */
 	void exitNumExpr(AlangParser.NumExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code BoolCompExpr}
+	 * labeled alternative in {@link AlangParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolCompExpr(AlangParser.BoolCompExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BoolCompExpr}
+	 * labeled alternative in {@link AlangParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolCompExpr(AlangParser.BoolCompExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ParExpr}
 	 * labeled alternative in {@link AlangParser#expr}.
 	 * @param ctx the parse tree
@@ -241,6 +283,18 @@ public interface AlangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCompExpr(AlangParser.CompExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code EqCompExpr}
+	 * labeled alternative in {@link AlangParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqCompExpr(AlangParser.EqCompExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code EqCompExpr}
+	 * labeled alternative in {@link AlangParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqCompExpr(AlangParser.EqCompExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AlangParser#var}.
 	 * @param ctx the parse tree

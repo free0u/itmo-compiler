@@ -1,4 +1,4 @@
-// Generated from D:/Programming/compiler-course/src/ru/ifmo/ctd/evdokimov/alang\Alang.g4 by ANTLR 4.5.1
+// Generated from D:/MyDocs/compiler-course/src/ru/ifmo/ctd/evdokimov/alang\Alang.g4 by ANTLR 4.5.1
 package ru.ifmo.ctd.evdokimov.alang.antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -160,6 +160,18 @@ public class AlangBaseListener implements AlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterWhileScope(AlangParser.WhileScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWhileScope(AlangParser.WhileScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIfStatement(AlangParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,6 +179,30 @@ public class AlangBaseListener implements AlangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIfStatement(AlangParser.IfStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIfThenScope(AlangParser.IfThenScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIfThenScope(AlangParser.IfThenScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIfElseScope(AlangParser.IfElseScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIfElseScope(AlangParser.IfElseScopeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -232,6 +268,18 @@ public class AlangBaseListener implements AlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBoolCompExpr(AlangParser.BoolCompExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolCompExpr(AlangParser.BoolCompExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParExpr(AlangParser.ParExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -275,6 +323,18 @@ public class AlangBaseListener implements AlangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCompExpr(AlangParser.CompExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEqCompExpr(AlangParser.EqCompExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEqCompExpr(AlangParser.EqCompExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
