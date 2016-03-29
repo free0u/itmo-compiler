@@ -255,7 +255,7 @@ fun getByteCode(ops : ArrayList<Op>) : ByteArray {
 }
 
 fun main(args: Array<String>) {
-    val lexer = AlangLexer(ANTLRFileStream("progs/power.a"))
+    val lexer = AlangLexer(ANTLRFileStream("progs/fib.a"))
     val parser = AlangParser(CommonTokenStream(lexer))
 
     val walker = ParseTreeWalker();
