@@ -1,0 +1,12 @@
+
+
+
+void main() {
+    int x;
+    read(x);
+    bool f;
+    read(f);
+    print(x);
+    print(f);
+    print(true);
+}

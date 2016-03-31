@@ -1,0 +1,14 @@
+
+
+void printInt(int x) {
+    print(x);
+}
+
+int sub(int a, int b) {
+    return a - b;
+}
+
+void main() {
+    printInt(10);
+    print(sub(1, 2));
+}

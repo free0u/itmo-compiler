@@ -4,16 +4,18 @@ import ru.ifmo.ctd.evdokimov.alang.antlr.AlangBaseListener
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangParser
 import java.util.*
 
-class AlangListener : AlangBaseListener() {
-    val globalVarScope = VarScope();
-    var inGlobalScope = false;
+class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListener() {
+    val globalVarScope = VarScope()
+    var inGlobalScope = false
+    var inArgScope = false
 
-    val scopes = ArrayList<VarScope>();
+    val scopes = ArrayList<VarScope>()
     var varIdx = 0;
 
     val stackExpr = Stack<Any>()
 
-    val ops = ArrayList<Op>();
+    private var ops = ArrayList<Op>()
+    val functionOps = HashMap<String, ArrayList<Op>>()
 
     fun printScopes() {
         for (scope in scopes) {
@@ -43,6 +45,28 @@ class AlangListener : AlangBaseListener() {
     override fun enterFuncDef(ctx: AlangParser.FuncDefContext) {
         scopes.clear()
         scopes.add(globalVarScope)
+        scopes.add(VarScope())
+        varIdx = 0
+
+        val funcName = ctx.funcName().text
+        ops = ArrayList<Op>()
+        functionOps.put(funcName, ops)
+
+        println("//begin ${funcName}")
+    }
+
+    override fun exitFuncDef(ctx: AlangParser.FuncDefContext) {
+        scopes.removeAt(scopes.size - 1) // argScope
+        scopes.removeAt(scopes.size - 1) // globalScope
+        println("//end ${ctx.funcName().text}")
+    }
+
+    override fun enterFunArgs(ctx: AlangParser.FunArgsContext) {
+        inArgScope = true
+    }
+
+    override fun exitFunArgs(ctx: AlangParser.FunArgsContext) {
+        inArgScope = false
     }
 
     override fun enterScope(ctx: AlangParser.ScopeContext) {
@@ -52,12 +76,6 @@ class AlangListener : AlangBaseListener() {
     override fun exitScope(ctx: AlangParser.ScopeContext) {
         scopes.removeAt(scopes.size - 1)
     }
-
-//    override fun enterPrintStatement(ctx: AlangParser.PrintStatementContext) {
-//        val v = ctx.expr().text
-//        val op = Op(OpType.PRINT, OpArg(ArgType.INT, v.toInt()), OpArg.empty, OpArg.empty)
-//        println(op)
-//    }
 
     override fun exitPrintStatement(ctx: AlangParser.PrintStatementContext) {
         val res = stackExpr.pop()
@@ -474,6 +492,140 @@ class AlangListener : AlangBaseListener() {
     }
 
 
-    override fun exitProgram(ctx: AlangParser.ProgramContext) {
+    ////////////////////////////////////////////
+    // return
+    override fun exitReturnStatement(ctx: AlangParser.ReturnStatementContext) {
+        if (ctx.expr() == null) {
+            val op = Op(OpType.RET, OpArg.empty, OpArg.empty, OpArg.empty)
+            ops.add(op);
+            println(op)
+            return
+        }
+
+        val res = stackExpr.pop()
+        val op = when (res) {
+            is Int -> Op(OpType.IRET, OpArg.int(res), OpArg.empty, OpArg.empty)
+            is String -> Op(OpType.IRET, OpArg.bool(res), OpArg.empty, OpArg.empty)
+            is VarDescr -> Op(OpType.IRET, OpArg.idx(res.id), OpArg.empty, OpArg.empty)
+            else -> error("Unexpected type in return: $res")
+        }
+        ops.add(op)
+        println(op)
+    }
+
+    /////////////////////////////
+    // procedure call
+
+//    var countArgs = 0
+//
+//    override fun enterProcStatement(ctx: AlangParser.ProcStatementContext) {
+//        countArgs = 0
+//    }
+//
+//    override fun enterFunArg(ctx: AlangParser.FunArgContext) {
+//        countArgs++
+//    }
+
+    override fun exitProcStatement(ctx: AlangParser.ProcStatementContext) {
+        val procName = ctx.funcName().text
+
+        val type = functionTypes.get(procName)!!
+        val countArgs = type.length - 1 // -1 because of function type
+
+        if (type.first() != 'V') {
+            error("only void function support at statement level but we have $procName with type: $type")
+        }
+
+        val args = ArrayList<Any>()
+        for (i in 1..countArgs) {
+            val res = stackExpr.pop()
+            args.add(res)
+        }
+        args.reverse()
+
+        for (arg in args) {
+            val op = when (arg) {
+                is Int -> Op(OpType.ARG, OpArg.int(arg), OpArg.empty, OpArg.empty)
+                is String -> Op(OpType.ARG, OpArg.bool(arg), OpArg.empty, OpArg.empty)
+                is VarDescr -> Op(OpType.ARG, OpArg.idx(arg.id), OpArg.empty, OpArg.empty)
+                else -> error("Unexpected type in proc statement $procName: $arg")
+            }
+            ops.add(op)
+            println(op)
+        }
+
+        val op = Op(OpType.CALL, OpArg.func(procName), OpArg.empty, OpArg.empty)
+        ops.add(op)
+        println(op)
+    }
+
+    //////////////////////////////
+    // functions
+
+    override fun exitCallExpr(ctx: AlangParser.CallExprContext) {
+        val procName = ctx.funcName().text
+
+        val type = functionTypes.get(procName)
+        if (type == null) {
+            error("type for function $procName not found")
+        }
+
+        val countArgs = type.length - 1 // -1 because of function type
+
+        if (type.first() == 'V') {
+            error("only int/bool function support at statement level but we have $procName with type: $type")
+        }
+
+        val args = ArrayList<Any>()
+        for (i in 1..countArgs) {
+            val res = stackExpr.pop()
+            args.add(res)
+        }
+        args.reverse()
+
+        for (arg in args) {
+            val op = when (arg) {
+                is Int -> Op(OpType.ARG, OpArg.int(arg), OpArg.empty, OpArg.empty)
+                is String -> Op(OpType.ARG, OpArg.bool(arg), OpArg.empty, OpArg.empty)
+                is VarDescr -> Op(OpType.ARG, OpArg.idx(arg.id), OpArg.empty, OpArg.empty)
+                else -> error("Unexpected type in callExpr statement $procName: $arg")
+            }
+            ops.add(op)
+            println(op)
+        }
+
+
+        stackExpr.push(VarDescr("#$varIdx", VarTypes.INT, varIdx))
+        val op = Op(OpType.ICALL, OpArg.func(procName), OpArg.empty, OpArg.idx(varIdx))
+        ops.add(op)
+        varIdx++;
+        println(op)
+    }
+
+    /////////////////////////////
+    // read
+
+    override fun exitReadStatement(ctx: AlangParser.ReadStatementContext) {
+        val varName = ctx.`var`().text
+
+        var descr : VarDescr? = null
+        for (scope in scopes) {
+            if (scope.containsKey(varName)) {
+                descr = scope.get(varName)
+            }
+        }
+        if (descr == null) {
+            printScopes()
+            error("var $varName not found in scopes")
+        }
+
+        val op = when (descr.type) {
+            VarTypes.BOOL -> Op(OpType.BREAD, OpArg.empty, OpArg.empty, OpArg.idx(descr.id))
+            VarTypes.INT -> Op(OpType.IREAD, OpArg.empty, OpArg.empty, OpArg.idx(descr.id))
+            else -> error("Reading in not bool/int var: $descr")
+        }
+
+        ops.add(op)
+        println(op)
     }
 }

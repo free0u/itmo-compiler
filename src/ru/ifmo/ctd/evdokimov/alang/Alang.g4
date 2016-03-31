@@ -29,8 +29,13 @@ type
     ;
 
 funcDef
-    : type funcName '()' scope
+    : type funcName '(' funArgs? ')' scope
     ;
+
+funArgs
+    : varDecl (',' varDecl)*
+    ;
+
 
 scope
     : '{' statements '}'
@@ -47,14 +52,24 @@ statement
     | whileStatement
     | printStatement ';'
     | readStatement ';'
+    | procStatement ';'
+    | returnStatement ';'
     ;
 
 assign
     : var '=' expr
     ;
 
+procStatement
+    : funcName '(' exprList? ')'
+    ;
+
 whileStatement
     : 'while' '(' expr ')' whileScope
+    ;
+
+returnStatement
+    : 'return' expr?
     ;
 
 whileScope : scope;
@@ -79,6 +94,7 @@ expr
     : NUM                              # NumExpr
     | boolConst                        # BoolExpr
     | var                              # VarExpr
+    | funcName '(' exprList? ')'       # CallExpr
     | expr op=('*'|'/'| '%') expr      # MulExpr
     | expr op=('+'|'-') expr           # AddExpr
     | expr op=('<'|'>'|'>='|'<=') expr # CompExpr
@@ -87,6 +103,14 @@ expr
     | '(' expr ')'                     # ParExpr
     ;
 
+
+exprList
+    : funArg (',' funArg)*
+    ;
+
+funArg
+    : expr
+    ;
 
 var : ID;
 funcName : ID;

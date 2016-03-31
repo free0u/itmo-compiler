@@ -21,10 +21,20 @@ enum class OpType {
     EQ, // ok EQ <idx|const> <idx|const> <idx> # int or bool -> int > bool # ==
     NEQ, // ok NEQ <idx|const> <idx|const> <idx> # int -> int > bool # !=
 
-    LABEL, // <label>
-    JMP, // <label>
-    JMPT, // <idx|const> <label>
-    JMPF, // <idx|const> <label>
+    LABEL, // ok <label>
+    JMP, // ok <label>
+    JMPT, // ok <idx|const> <label>
+    JMPF, // ok <idx|const> <label>
+
+    RET, //
+    IRET, // <idx|const>
+
+    ARG, // <idx|const>
+    CALL, // <name>
+    ICALL, // <name> <idx>
+
+    IREAD, // <idx>
+    BREAD, // <idx>
 
     ;
 }

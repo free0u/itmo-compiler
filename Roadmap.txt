@@ -43,6 +43,7 @@ Stage 2
     comments
     skip operator
     read
+    tests
 
 
 sandbox

@@ -78,6 +78,16 @@ public interface AlangListener extends ParseTreeListener {
 	 */
 	void exitFuncDef(AlangParser.FuncDefContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AlangParser#funArgs}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunArgs(AlangParser.FunArgsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#funArgs}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunArgs(AlangParser.FunArgsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AlangParser#scope}.
 	 * @param ctx the parse tree
 	 */
@@ -118,6 +128,16 @@ public interface AlangListener extends ParseTreeListener {
 	 */
 	void exitAssign(AlangParser.AssignContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AlangParser#procStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterProcStatement(AlangParser.ProcStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#procStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitProcStatement(AlangParser.ProcStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AlangParser#whileStatement}.
 	 * @param ctx the parse tree
 	 */
@@ -127,6 +147,16 @@ public interface AlangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitWhileStatement(AlangParser.WhileStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#returnStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnStatement(AlangParser.ReturnStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#returnStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnStatement(AlangParser.ReturnStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AlangParser#whileScope}.
 	 * @param ctx the parse tree
@@ -260,6 +290,18 @@ public interface AlangListener extends ParseTreeListener {
 	 */
 	void exitVarExpr(AlangParser.VarExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code CallExpr}
+	 * labeled alternative in {@link AlangParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCallExpr(AlangParser.CallExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CallExpr}
+	 * labeled alternative in {@link AlangParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCallExpr(AlangParser.CallExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code AddExpr}
 	 * labeled alternative in {@link AlangParser#expr}.
 	 * @param ctx the parse tree
@@ -295,6 +337,26 @@ public interface AlangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqCompExpr(AlangParser.EqCompExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#exprList}.
+	 * @param ctx the parse tree
+	 */
+	void enterExprList(AlangParser.ExprListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#exprList}.
+	 * @param ctx the parse tree
+	 */
+	void exitExprList(AlangParser.ExprListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#funArg}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunArg(AlangParser.FunArgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#funArg}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunArg(AlangParser.FunArgContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AlangParser#var}.
 	 * @param ctx the parse tree

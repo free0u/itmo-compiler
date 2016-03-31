@@ -1,23 +1,34 @@
 package ru.ifmo.ctd.evdokimov.sandbox;
 
+import java.util.Scanner;
+
 public class Sums {
-    private static int xxx = 10;
 
-    private int yyy = 100;
-    private boolean zzz = true;
+    private static void foo(int x) {
 
-    public static void bar() {
-        boolean x = true;
-        boolean y = false;
-        boolean f = x || y;
+    }
+
+    private static boolean bar(boolean f, boolean f1) {
+        return f;
+    }
+
+    private static int getInt(int x) {
+        return x;
+    }
+
+    private static int sub(int a, int b) {
+        return a - b;
+    }
+
+    private static Scanner sc = new Scanner(System.in);
+
+    private static void main() {
+        System.out.println(true);
+        System.out.println(12);
     }
 
     public static void main(String[] args) {
-
-        boolean x = true;
-        System.out.println(x);
-
-
+        main();
     }
 }
 

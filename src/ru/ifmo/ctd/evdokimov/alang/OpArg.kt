@@ -23,6 +23,12 @@ class OpArg(val type : ArgType,
         fun bool(v : String) : OpArg {
             return OpArg(ArgType.BOOL, if (v.equals("true")) 1 else 0)
         }
+
+        fun func(v : String) : OpArg {
+            return OpArg(ArgType.FUNCTION, v)
+        }
+
+
     }
 
     override fun toString(): String{
@@ -32,6 +38,7 @@ class OpArg(val type : ArgType,
             ArgType.IDX -> return "#$value"
             ArgType.BOOL -> return "b$value"
             ArgType.LABEL -> return "%$value"
+            ArgType.FUNCTION -> return "<$value>"
             else -> return "OpArg(type=$type, value=$value)"
         }
     }
@@ -43,6 +50,7 @@ enum class ArgType {
     IDX,
     INT,
     BOOL,
+    FUNCTION,
     LABEL,
     EMPTY
 }

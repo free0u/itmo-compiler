@@ -100,6 +100,18 @@ public class AlangBaseListener implements AlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFunArgs(AlangParser.FunArgsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunArgs(AlangParser.FunArgsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterScope(AlangParser.ScopeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -148,6 +160,18 @@ public class AlangBaseListener implements AlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterProcStatement(AlangParser.ProcStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProcStatement(AlangParser.ProcStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterWhileStatement(AlangParser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -155,6 +179,18 @@ public class AlangBaseListener implements AlangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitWhileStatement(AlangParser.WhileStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReturnStatement(AlangParser.ReturnStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturnStatement(AlangParser.ReturnStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -304,6 +340,18 @@ public class AlangBaseListener implements AlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCallExpr(AlangParser.CallExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCallExpr(AlangParser.CallExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAddExpr(AlangParser.AddExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -335,6 +383,30 @@ public class AlangBaseListener implements AlangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEqCompExpr(AlangParser.EqCompExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExprList(AlangParser.ExprListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExprList(AlangParser.ExprListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunArg(AlangParser.FunArgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunArg(AlangParser.FunArgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
