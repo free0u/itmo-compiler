@@ -123,5 +123,5 @@ boolConst : ('true' | 'false' );
 
 ID : [a-zA-Z][a-zA-Z0-9]*;
 NUM : [+-]?[0-9][0-9]*;
-
+COMMENTS : '//' ~('\r' | '\n')* -> skip;
 WS : [ \t\r\n]+ -> skip;

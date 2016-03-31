@@ -1,4 +1,4 @@
-int power(int n, int k) {
+int power(int n, int k) { // n^k
     int r;
     r = 1;
     while (k > 0) {

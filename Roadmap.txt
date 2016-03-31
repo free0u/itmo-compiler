@@ -39,10 +39,7 @@ PRINT <idx|const>
 
 Stage 2
     global var
-    function calls
     comments
-    skip operator
-    read
     tests
 
 
