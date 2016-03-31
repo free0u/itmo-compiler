@@ -376,7 +376,7 @@ fun parseFuncTypes(filename : String) : HashMap<String, String> {
 fun main(args: Array<String>) {
     var filename = "progs/functions.a"
 
-    filename = "progs/power-interactive.a"
+    filename = "progs/fib-rec.a"
 
     val functionTypes = parseFuncTypes(filename)
 
