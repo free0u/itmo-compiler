@@ -1,4 +1,7 @@
+int callCounter;
+
 int power(int n, int k) { // n^k
+    callCounter = callCounter + 1;
     int r;
     r = 1;
     while (k > 0) {
@@ -13,12 +16,19 @@ int power(int n, int k) { // n^k
 }
 
 void main() {
-    while(true) {
+    bool f;
+    f = true;
+    while(f) {
         int n;
         int k;
         read(n);
         read(k);
-        print(power(n, k));
+        if (n == -1 && k == -1) {
+            print(callCounter);
+            f = false;
+        } else {
+            print(power(n, k));
+        }
     }
 }
 
