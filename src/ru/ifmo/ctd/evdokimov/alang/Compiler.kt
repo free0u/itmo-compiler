@@ -408,7 +408,7 @@ fun main(args: Array<String>) {
     var filename = "progs/functions.a"
 
     filename = "progs/fib-rec.a"
-    filename = "progs/global.a"
+//    filename = "progs/global.a"
 
     val functionTypes = parseFuncTypes(filename)
 

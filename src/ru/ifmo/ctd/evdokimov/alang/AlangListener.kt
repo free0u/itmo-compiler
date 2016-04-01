@@ -536,6 +536,9 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
     override fun exitProcStatement(ctx: AlangParser.ProcStatementContext) {
         val procName = ctx.funcName().text
 
+        if (!functionTypes.contains(procName)) {
+            error("unexpected function: $procName")
+        }
         val type = functionTypes.get(procName)!!
         val countArgs = type.length - 1 // -1 because of function type
 
