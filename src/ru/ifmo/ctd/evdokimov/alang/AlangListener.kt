@@ -17,6 +17,10 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
     private var ops = ArrayList<Op>()
     val functionOps = HashMap<String, ArrayList<Op>>()
 
+    val globalVarNames = HashMap<Int, String>()
+    val globalVarTypes = HashMap<Int, String>()
+    var globalVarIdx = -1
+
     fun printScopes() {
         for (scope in scopes) {
             println(scopes)
@@ -35,7 +39,10 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
         val name = ctx.`var`().ID().text
         val type = ctx.type().text
         if (inGlobalScope) {
-            globalVarScope.put(name, VarDescr(name, VarTypes.parse(type), -1))
+            globalVarScope.put(name, VarDescr(name, VarTypes.parse(type), globalVarIdx))
+            globalVarNames.put(globalVarIdx, name)
+            globalVarTypes.put(globalVarIdx, if (type == "int") "I" else "Z")
+            globalVarIdx--
         } else {
             scopes.last().put(name, VarDescr(name, VarTypes.parse(type), varIdx))
             varIdx++

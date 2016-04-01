@@ -8,10 +8,11 @@ int fib(int n) {
 }
 
 void main() {
-    while (true) {
-        int n;
-        read(n);
-        print(fib(n));
+    int i;
+    i = 1;
+    while (i < 10) {
+        print(fib(i));
+        i = i + 1;
     }
 }
 

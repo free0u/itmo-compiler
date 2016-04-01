@@ -25,6 +25,32 @@ fun generateJavaType(typeRaw : String) : String {
 }
 
 fun getByteCode(listener: AlangListener) : ByteArray {
+
+    val functions = listener.functionOps
+    val functionTypes = listener.functionTypes
+    val globalVarNames = listener.globalVarNames
+    val globalVarTypes = listener.globalVarTypes
+
+    fun loadFromVarToStack(mv : MethodVisitor, idx : Int) {
+        if (idx < 0) {
+            val name = globalVarNames.get(idx)!!
+            val type = globalVarTypes.get(idx)!!
+            mv.visitFieldInsn(GETSTATIC, "Main", name, type);
+        } else {
+            mv.visitVarInsn(ILOAD, idx)
+        }
+    }
+
+    fun storeFromStackToVar(mv : MethodVisitor, idx : Int) {
+        if (idx < 0) {
+            val name = globalVarNames.get(idx)!!
+            val type = globalVarTypes.get(idx)!!
+            mv.visitFieldInsn(PUTSTATIC, "Main", name, type);
+        } else {
+            mv.visitVarInsn(ISTORE, idx)
+        }
+    }
+
     val cw = ClassWriter(ClassWriter.COMPUTE_FRAMES)
     var mv: MethodVisitor
     var fv: FieldVisitor
@@ -45,8 +71,15 @@ fun getByteCode(listener: AlangListener) : ByteArray {
 
     val labelMapping = HashMap<Int, Label>()
 
-    val functions = listener.functionOps
-    val functionTypes = listener.functionTypes
+
+
+    for (id in globalVarNames.keys) {
+        val name = globalVarNames.get(id)!!
+        val type = globalVarTypes.get(id)!!
+
+        fv = cw.visitField(ACC_PRIVATE + ACC_STATIC, name, type, null, null);
+    }
+
 
     for (funcName in functions.keys) {
         val ops = functions.get(funcName)!!
@@ -72,14 +105,14 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     if (x.type == ArgType.INT) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int)
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in add..mod group: $x")
                     }
                     if (y.type == ArgType.INT) {
                         mv.visitLdcInsn(y.value as Int)
                     } else if (y.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, y.value as Int)
+                        loadFromVarToStack(mv, y.value as Int)
                     } else {
                         error("unexpected type in add..mod group: $y")
                     }
@@ -94,18 +127,18 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     }
 
                     mv.visitInsn(jvmOp);
-                    mv.visitVarInsn(ISTORE, res.value as Int)
+                    storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.ASSIGN) {
                     if (x.type == ArgType.INT) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.BOOL) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int)
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in assign group: $x")
                     }
-                    mv.visitVarInsn(ISTORE, res.value as Int);
+                    storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.PRINT) {
                     if (x.type == ArgType.INT || x.type == ArgType.BOOL) {
                         mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
@@ -113,7 +146,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
                     } else if (x.type == ArgType.IDX) {
                         mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-                        mv.visitVarInsn(ILOAD, x.value as Int);
+                        loadFromVarToStack(mv, x.value as Int)
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
                     } else {
                         error("unexpected type in print group: $x")
@@ -128,14 +161,14 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     if (x.type == ArgType.INT || x.type == ArgType.BOOL) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int)
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in comp group: $x")
                     }
                     if (y.type == ArgType.INT || y.type == ArgType.BOOL) {
                         mv.visitLdcInsn(y.value as Int)
                     } else if (y.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, y.value as Int)
+                        loadFromVarToStack(mv, y.value as Int)
                     } else {
                         error("unexpected type in comp group: $y")
                     }
@@ -159,12 +192,12 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     mv.visitInsn(ICONST_0)
                     mv.visitLabel(l3)
 
-                    mv.visitVarInsn(ISTORE, res.value as Int)
+                    storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.BAND) {
                     if (x.type == ArgType.BOOL) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int)
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in badd group: $x")
                     }
@@ -173,7 +206,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     if (y.type == ArgType.BOOL) {
                         mv.visitLdcInsn(y.value as Int)
                     } else if (y.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, y.value as Int)
+                        loadFromVarToStack(mv, y.value as Int)
                     } else {
                         error("unexpected type in badd group: $y")
                     }
@@ -186,14 +219,13 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     mv.visitInsn(ICONST_0);
                     mv.visitLabel(l4);
 
-                    mv.visitVarInsn(ISTORE, res.value as Int);
+                    storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.BOR) {
 
-    //                mv.visitVarInsn(ILOAD, 0);
                     if (x.type == ArgType.BOOL) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int)
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in bor group: $x")
                     }
@@ -201,11 +233,10 @@ fun getByteCode(listener: AlangListener) : ByteArray {
 
                     val l3 = Label();
                     mv.visitJumpInsn(IFNE, l3);
-    //                mv.visitVarInsn(ILOAD, 1);
                     if (y.type == ArgType.BOOL) {
                         mv.visitLdcInsn(y.value as Int)
                     } else if (y.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, y.value as Int)
+                        loadFromVarToStack(mv, y.value as Int)
                     } else {
                         error("unexpected type in bor group: $y")
                     }
@@ -220,7 +251,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     mv.visitInsn(ICONST_0);
                     mv.visitLabel(l5);
 
-                    mv.visitVarInsn(ISTORE, res.value as Int);
+                    storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.LABEL) {
                     val labelId = x.value as Int
                     if (!labelMapping.containsKey(labelId)) {
@@ -247,7 +278,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     if (x.type == ArgType.BOOL) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int)
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in jmpt/jmpf group: $x")
                     }
@@ -265,7 +296,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     if (x.type == ArgType.INT || x.type == ArgType.BOOL) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int);
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in iret group: $x")
                     }
@@ -274,7 +305,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     if (x.type == ArgType.INT || x.type == ArgType.BOOL) {
                         mv.visitLdcInsn(x.value as Int)
                     } else if (x.type == ArgType.IDX) {
-                        mv.visitVarInsn(ILOAD, x.value as Int);
+                        loadFromVarToStack(mv, x.value as Int)
                     } else {
                         error("unexpected type in arg group: $x")
                     }
@@ -291,7 +322,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     val retType = generateJavaType(typeRaw)
 
                     mv.visitMethodInsn(INVOKESTATIC, "Main", callingFunction, retType, false);
-                    mv.visitVarInsn(ISTORE, res.value as Int);
+                    storeFromStackToVar(mv, res.value as Int)
                 } else if  (op.type == OpType.CALL) {
                     if (x.type != ArgType.FUNCTION) {
                         error("arg 1 for ICALL should be function")
@@ -308,14 +339,14 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     }
                     mv.visitFieldInsn(GETSTATIC, "Main", "_sc", "Ljava/util/Scanner;");
                     mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextInt", "()I", false);
-                    mv.visitVarInsn(ISTORE, res.value as Int);
+                    storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.BREAD) {
                     if (res.type != ArgType.IDX) {
                         error("arg 3 for BREAD should be idx")
                     }
                     mv.visitFieldInsn(GETSTATIC, "Main", "_sc", "Ljava/util/Scanner;");
                     mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextBoolean", "()Z", false);
-                    mv.visitVarInsn(ISTORE, res.value as Int);
+                    storeFromStackToVar(mv, res.value as Int)
                 }
                 else {
                     error("Unexpected operation: $op")
@@ -377,6 +408,7 @@ fun main(args: Array<String>) {
     var filename = "progs/functions.a"
 
     filename = "progs/fib-rec.a"
+    filename = "progs/global.a"
 
     val functionTypes = parseFuncTypes(filename)
 
@@ -387,20 +419,9 @@ fun main(args: Array<String>) {
     val walker = ParseTreeWalker();
     val listener = AlangListener(functionTypes)
     walker.walk(listener, parser.program())
-
     val bytes = getByteCode(listener)
-//
-//    println()
-//    println("DUMP ops:")
-//    println(listener.functionTypes)
-//    println()
-//    for (key in listener.functionOps.keys) {
-//        println(key + " " + listener.functionTypes.get(key)!!)
-//        for (i in listener.functionOps.get(key)!!) {
-//            println(i)
-//        }
-//    }
-//
+
+
     println("run compiled class")
     val aClass = ByteCodeLoader.clazz.loadClass(bytes)
     val meth = aClass.getMethod("main", Array<String>::class.java)

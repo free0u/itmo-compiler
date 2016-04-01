@@ -1,0 +1,18 @@
+int x;
+
+void main() {
+    x = 1;
+    print(x);
+    if (true) {
+        int x;
+        x = 2;
+        print(x);
+    } else {}
+    print(x);
+    if (1 > 0) {
+        x = 3;
+        print(x);
+    } else {}
+    print(x);
+}
+
