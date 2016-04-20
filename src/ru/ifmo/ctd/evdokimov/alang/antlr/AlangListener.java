@@ -158,6 +158,26 @@ public interface AlangListener extends ParseTreeListener {
 	 */
 	void exitReturnStatement(AlangParser.ReturnStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AlangParser#breakStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterBreakStatement(AlangParser.BreakStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#breakStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitBreakStatement(AlangParser.BreakStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#continueStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterContinueStatement(AlangParser.ContinueStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#continueStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitContinueStatement(AlangParser.ContinueStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AlangParser#whileScope}.
 	 * @param ctx the parse tree
 	 */
@@ -167,6 +187,46 @@ public interface AlangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitWhileScope(AlangParser.WhileScopeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#switchStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterSwitchStatement(AlangParser.SwitchStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#switchStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitSwitchStatement(AlangParser.SwitchStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#switchScope}.
+	 * @param ctx the parse tree
+	 */
+	void enterSwitchScope(AlangParser.SwitchScopeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#switchScope}.
+	 * @param ctx the parse tree
+	 */
+	void exitSwitchScope(AlangParser.SwitchScopeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#caseScope}.
+	 * @param ctx the parse tree
+	 */
+	void enterCaseScope(AlangParser.CaseScopeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#caseScope}.
+	 * @param ctx the parse tree
+	 */
+	void exitCaseScope(AlangParser.CaseScopeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AlangParser#caseExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCaseExpr(AlangParser.CaseExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AlangParser#caseExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCaseExpr(AlangParser.CaseExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AlangParser#ifStatement}.
 	 * @param ctx the parse tree

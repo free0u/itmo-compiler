@@ -1,0 +1,17 @@
+void main() {
+    int i;
+    i = 0;
+    while (true) {
+        i = i + 1;
+
+        if (i % 2 == 1) {
+            continue;
+        } else {}
+
+        if (i > 10) {
+            break;
+        } else {}
+
+        print(i);
+    }
+}

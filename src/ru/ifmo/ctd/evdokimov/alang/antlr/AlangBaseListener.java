@@ -196,6 +196,30 @@ public class AlangBaseListener implements AlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBreakStatement(AlangParser.BreakStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBreakStatement(AlangParser.BreakStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterContinueStatement(AlangParser.ContinueStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitContinueStatement(AlangParser.ContinueStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterWhileScope(AlangParser.WhileScopeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -203,6 +227,54 @@ public class AlangBaseListener implements AlangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitWhileScope(AlangParser.WhileScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSwitchStatement(AlangParser.SwitchStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSwitchStatement(AlangParser.SwitchStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSwitchScope(AlangParser.SwitchScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSwitchScope(AlangParser.SwitchScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCaseScope(AlangParser.CaseScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCaseScope(AlangParser.CaseScopeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCaseExpr(AlangParser.CaseExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCaseExpr(AlangParser.CaseExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

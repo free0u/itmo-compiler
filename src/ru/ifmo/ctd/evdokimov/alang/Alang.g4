@@ -50,10 +50,13 @@ statement
     | assign ';'
     | ifStatement
     | whileStatement
+    | switchStatement
     | printStatement ';'
     | readStatement ';'
     | procStatement ';'
     | returnStatement ';'
+    | breakStatement ';'
+    | continueStatement ';'
     ;
 
 assign
@@ -72,7 +75,36 @@ returnStatement
     : 'return' expr?
     ;
 
+breakStatement
+    : 'break'
+    ;
+
+continueStatement
+    : 'continue'
+    ;
+
 whileScope : scope;
+
+
+switchStatement
+    : 'switch' '(' expr ')' switchScope
+    ;
+
+switchScope
+    :'{'
+        caseScope*
+        'default' ':' scope
+     '}'
+    ;
+
+caseScope
+    : caseExpr ':' scope
+    ;
+
+caseExpr
+    : expr
+    ;
+
 
 ifStatement
     : 'if' '(' expr ')' ifThenScope 'else' ifElseScope

@@ -398,20 +398,22 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
 
     ////////////////////////////////////////////////////////
     // if and while
-    val labelsStack = Stack<Int>()
+    val labelsIfStack = Stack<Int>()
+    val labelsWhileStack = Stack<Int>()
+    val labelsSwitchStack = Stack<Int>()
     var labelInd = 0
+    var switchValueIdx = OpArg.empty
+
 
     override fun enterIfStatement(ctx: AlangParser.IfStatementContext) {
         val labelElse = labelInd++
         val labelEnd = labelInd++
-        labelsStack.push(labelEnd)
-        labelsStack.push(labelElse)
-        labelsStack.push(labelEnd)
-        labelsStack.push(labelElse)
+        labelsIfStack.push(labelElse)
+        labelsIfStack.push(labelEnd)
     }
 
     override fun enterIfThenScope(ctx: AlangParser.IfThenScopeContext) {
-        val labelElse = labelsStack.pop()
+        val labelElse = labelsIfStack.get(labelsIfStack.size - 2)
 
         val res = stackExpr.pop()
         val arg : OpArg
@@ -429,8 +431,8 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
     }
 
     override fun exitIfThenScope(ctx: AlangParser.IfThenScopeContext) {
-        val labelEnd = labelsStack.pop()
-        val labelElse = labelsStack.pop()
+        val labelEnd = labelsIfStack.peek()
+        val labelElse = labelsIfStack.get(labelsIfStack.size - 2)
 
         var op = Op(OpType.JMP, OpArg.label(labelEnd), OpArg.empty, OpArg.empty)
         ops.add(op)
@@ -442,7 +444,9 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
     }
 
     override fun exitIfElseScope(ctx: AlangParser.IfElseScopeContext) {
-        val labelEnd = labelsStack.pop()
+        val labelEnd = labelsIfStack.pop()
+        labelsIfStack.pop()
+
         var op = Op(OpType.LABEL, OpArg.label(labelEnd), OpArg.empty, OpArg.empty)
         ops.add(op)
         println(op)
@@ -453,20 +457,19 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
 
 
     override fun enterWhileStatement(ctx: AlangParser.WhileStatementContext) {
-        val labelEnd = labelInd++
         val labelBegin = labelInd++
+        val labelEnd = labelInd++
 
         val op = Op(OpType.LABEL, OpArg.label(labelBegin), OpArg.empty, OpArg.empty)
         ops.add(op)
         println(op)
 
-        labelsStack.push(labelEnd)
-        labelsStack.push(labelBegin)
-        labelsStack.push(labelEnd)
+        labelsWhileStack.push(labelBegin)
+        labelsWhileStack.push(labelEnd)
     }
 
     override fun enterWhileScope(ctx: AlangParser.WhileScopeContext) {
-        val labelEnd = labelsStack.pop()
+        val labelEnd = labelsWhileStack.peek()
 
         val res = stackExpr.pop()
         val arg : OpArg
@@ -486,8 +489,8 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
     }
 
     override fun exitWhileScope(ctx: AlangParser.WhileScopeContext) {
-        val labelBegin = labelsStack.pop()
-        val labelEnd = labelsStack.pop()
+        val labelEnd = labelsWhileStack.pop()
+        val labelBegin = labelsWhileStack.pop()
 
         var op = Op(OpType.JMP, OpArg.label(labelBegin), OpArg.empty, OpArg.empty)
         ops.add(op)
@@ -498,6 +501,101 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
         println(op)
     }
 
+
+    /////////////////////////////////
+    // break & continue
+    override fun exitBreakStatement(ctx: AlangParser.BreakStatementContext) {
+        val labelEnd = labelsWhileStack.peek()
+        var op = Op(OpType.BREAK, OpArg.label(labelEnd), OpArg.empty, OpArg.empty)
+        ops.add(op)
+        println(op)
+    }
+
+    override fun exitContinueStatement(ctx: AlangParser.ContinueStatementContext) {
+        val labelBegin = labelsWhileStack.get(labelsWhileStack.size - 2)
+        var op = Op(OpType.CONTINUE, OpArg.label(labelBegin), OpArg.empty, OpArg.empty)
+        ops.add(op)
+        println(op)
+    }
+
+
+    ///////////////////////////////////////////
+    // switch
+
+    override fun enterSwitchScope(ctx: AlangParser.SwitchScopeContext) {
+        val cases = ctx.caseScope()
+        val nCases = cases.size - 1
+
+        switchValueIdx = OpArg.idx(varIdx)
+        varIdx++
+
+
+        val res = stackExpr.pop()
+        val arg : OpArg
+        if (res is String) {
+            arg = OpArg.bool(res)
+        } else if (res is Int) {
+            arg = OpArg.int(res)
+        } else if (res is VarDescr) {
+            arg = OpArg.idx(res.id)
+        } else {
+            error("Wrong expr for switch: $res")
+        }
+
+        val op = Op(OpType.ASSIGN, arg, OpArg.empty, switchValueIdx)
+        ops.add(op)
+        println(op)
+
+
+        labelsSwitchStack.push(labelInd++)
+
+        for (i in 0..nCases) {
+            val label = labelInd++
+            labelsSwitchStack.push(label)
+        }
+    }
+
+    override fun exitCaseExpr(ctx: AlangParser.CaseExprContext) {
+        val res = stackExpr.pop()
+        val arg : OpArg
+        if (res is String) {
+            arg = OpArg.bool(res)
+        } else if (res is Int) {
+            arg = OpArg.int(res)
+        } else if (res is VarDescr && res.type == VarTypes.BOOL) {
+            arg = OpArg.idx(res.id)
+        } else {
+            error("Wrong expr for case: $res")
+        }
+
+        val to = OpArg(ArgType.IDX, varIdx++)
+
+        var op = Op(OpType.EQ, switchValueIdx, arg, to)
+        ops.add(op)
+        println(op)
+
+        op = Op(OpType.JMPF, to, OpArg.label(labelsSwitchStack.peek()), OpArg.empty)
+        ops.add(op)
+        println(op)
+    }
+
+
+    override fun exitCaseScope(ctx: AlangParser.CaseScopeContext) {
+        var op = Op(OpType.JMP, OpArg.label(labelsSwitchStack.first()), OpArg.empty, OpArg.empty)
+        ops.add(op)
+        println(op)
+
+        op = Op(OpType.LABEL, OpArg.label(labelsSwitchStack.pop()), OpArg.empty, OpArg.empty)
+        ops.add(op)
+        println(op)
+
+    }
+
+    override fun exitSwitchScope(ctx: AlangParser.SwitchScopeContext) {
+        val op = Op(OpType.LABEL, OpArg.label(labelsSwitchStack.pop()), OpArg.empty, OpArg.empty)
+        ops.add(op)
+        println(op)
+    }
 
     ////////////////////////////////////////////
     // return
@@ -638,4 +736,7 @@ class AlangListener(val functionTypes: HashMap<String, String>) : AlangBaseListe
         ops.add(op)
         println(op)
     }
+
+
+
 }

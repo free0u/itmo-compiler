@@ -347,8 +347,23 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     mv.visitFieldInsn(GETSTATIC, "Main", "_sc", "Ljava/util/Scanner;");
                     mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextBoolean", "()Z", false);
                     storeFromStackToVar(mv, res.value as Int)
-                }
-                else {
+                } else if (op.type == OpType.BREAK) {
+                    val labelId = x.value as Int
+                    if (!labelMapping.containsKey(labelId)) {
+                        labelMapping.put(labelId, Label())
+                    }
+                    val label : Label = labelMapping.get(labelId)!!
+
+                    mv.visitJumpInsn(GOTO, label);
+                } else if (op.type == OpType.CONTINUE) {
+                    val labelId = x.value as Int
+                    if (!labelMapping.containsKey(labelId)) {
+                        labelMapping.put(labelId, Label())
+                    }
+                    val label : Label = labelMapping.get(labelId)!!
+
+                    mv.visitJumpInsn(GOTO, label);
+                } else {
                     error("Unexpected operation: $op")
                 }
             }
@@ -409,6 +424,8 @@ fun main(args: Array<String>) {
 
     filename = "progs/fib-rec.a"
     filename = "progs/power-interactive.a"
+    filename = "progs/break.a"
+    filename = "progs/switch.a"
 
     val functionTypes = parseFuncTypes(filename)
 

@@ -26,6 +26,9 @@ enum class OpType {
     JMPT, // ok <idx|const> <label>
     JMPF, // ok <idx|const> <label>
 
+    BREAK, // ok <label>
+    CONTINUE, // ok <label>
+
     RET, //
     IRET, // <idx|const>
 
