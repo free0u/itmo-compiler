@@ -10,8 +10,10 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes.*
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangLexer
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangParser
+import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.io.FileOutputStream
+import java.io.PrintStream
 import java.util.*
 
 fun generateJavaType(typeRaw : String) : String {
@@ -31,11 +33,13 @@ fun getByteCode(listener: AlangListener) : ByteArray {
     val globalVarNames = listener.globalVarNames
     val globalVarTypes = listener.globalVarTypes
 
+    var className = "Main" + ((Math.random() * 1000).toInt())
+
     fun loadFromVarToStack(mv : MethodVisitor, idx : Int) {
         if (idx < 0) {
             val name = globalVarNames.get(idx)!!
             val type = globalVarTypes.get(idx)!!
-            mv.visitFieldInsn(GETSTATIC, "Main", name, type);
+            mv.visitFieldInsn(GETSTATIC, className, name, type);
         } else {
             mv.visitVarInsn(ILOAD, idx)
         }
@@ -45,7 +49,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
         if (idx < 0) {
             val name = globalVarNames.get(idx)!!
             val type = globalVarTypes.get(idx)!!
-            mv.visitFieldInsn(PUTSTATIC, "Main", name, type);
+            mv.visitFieldInsn(PUTSTATIC, className, name, type);
         } else {
             mv.visitVarInsn(ISTORE, idx)
         }
@@ -54,7 +58,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
     val cw = ClassWriter(ClassWriter.COMPUTE_FRAMES)
     var mv: MethodVisitor
     var fv: FieldVisitor
-    cw.visit(52, ACC_PUBLIC + ACC_SUPER, "Main", null, "java/lang/Object", null)
+    cw.visit(52, ACC_PUBLIC + ACC_SUPER, className, null, "java/lang/Object", null)
 
     run {
         fv = cw.visitField(ACC_PRIVATE + ACC_STATIC, "_sc", "Ljava/util/Scanner;", null, null);
@@ -321,7 +325,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     val typeRaw = functionTypes.get(callingFunction)!!
                     val retType = generateJavaType(typeRaw)
 
-                    mv.visitMethodInsn(INVOKESTATIC, "Main", callingFunction, retType, false);
+                    mv.visitMethodInsn(INVOKESTATIC, className, callingFunction, retType, false);
                     storeFromStackToVar(mv, res.value as Int)
                 } else if  (op.type == OpType.CALL) {
                     if (x.type != ArgType.FUNCTION) {
@@ -332,19 +336,19 @@ fun getByteCode(listener: AlangListener) : ByteArray {
                     val typeRaw = functionTypes.get(callingFunction)!!
                     val retType = generateJavaType(typeRaw)
 
-                    mv.visitMethodInsn(INVOKESTATIC, "Main", callingFunction, retType, false);
+                    mv.visitMethodInsn(INVOKESTATIC, className, callingFunction, retType, false);
                 } else if (op.type == OpType.IREAD) {
                     if (res.type != ArgType.IDX) {
                         error("arg 3 for IREAD should be idx")
                     }
-                    mv.visitFieldInsn(GETSTATIC, "Main", "_sc", "Ljava/util/Scanner;");
+                    mv.visitFieldInsn(GETSTATIC, className, "_sc", "Ljava/util/Scanner;");
                     mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextInt", "()I", false);
                     storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.BREAD) {
                     if (res.type != ArgType.IDX) {
                         error("arg 3 for BREAD should be idx")
                     }
-                    mv.visitFieldInsn(GETSTATIC, "Main", "_sc", "Ljava/util/Scanner;");
+                    mv.visitFieldInsn(GETSTATIC, className, "_sc", "Ljava/util/Scanner;");
                     mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextBoolean", "()Z", false);
                     storeFromStackToVar(mv, res.value as Int)
                 } else if (op.type == OpType.BREAK) {
@@ -379,7 +383,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
     run {
         mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
 
-        mv.visitMethodInsn(INVOKESTATIC, "Main", "main", "()V", false);
+        mv.visitMethodInsn(INVOKESTATIC, className, "main", "()V", false);
         mv.visitInsn(RETURN);
 
         mv.visitMaxs(1, 2);
@@ -392,7 +396,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
         mv.visitInsn(DUP);
         mv.visitFieldInsn(GETSTATIC, "java/lang/System", "in", "Ljava/io/InputStream;");
         mv.visitMethodInsn(INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V", false);
-        mv.visitFieldInsn(PUTSTATIC, "Main", "_sc", "Ljava/util/Scanner;");
+        mv.visitFieldInsn(PUTSTATIC, className, "_sc", "Ljava/util/Scanner;");
         mv.visitInsn(RETURN);
         mv.visitMaxs(1, 2);
     }
@@ -419,18 +423,12 @@ fun parseFuncTypes(filename : String) : HashMap<String, String> {
     return funcListener.functionTypes
 }
 
-fun main(args: Array<String>) {
-    var filename = "progs/functions.a"
+fun testProgram(programName : String, input : String, expectedOutput: String) : Boolean {
 
-    filename = "progs/fib-rec.a"
-    filename = "progs/power-interactive.a"
-    filename = "progs/break.a"
-    filename = "progs/switch.a"
-
-    val functionTypes = parseFuncTypes(filename)
+    val functionTypes = parseFuncTypes(programName)
 
 
-    val lexer = AlangLexer(ANTLRFileStream(filename))
+    val lexer = AlangLexer(ANTLRFileStream(programName))
     val parser = AlangParser(CommonTokenStream(lexer))
 
     val walker = ParseTreeWalker();
@@ -442,5 +440,56 @@ fun main(args: Array<String>) {
     println("run compiled class")
     val aClass = ByteCodeLoader.clazz.loadClass(bytes)
     val meth = aClass.getMethod("main", Array<String>::class.java)
-    meth.invoke(null, args)
+    val arr : Array<String> = arrayOf()
+
+
+    val oldOut = System.out
+
+    val baos = ByteArrayOutputStream()
+    val outputStream = PrintStream(baos)
+    System.setIn(input.byteInputStream())
+    System.setOut(outputStream)
+
+    meth.invoke(null, arr)
+
+    System.setOut(oldOut)
+
+    val realOutput = baos.toString("UTF-8").trim()
+
+    return realOutput.equals(expectedOutput)
+}
+
+fun main(args: Array<String>) {
+    println("Result : " + testProgram("progs/sum.a", "2 3", "5"))
+    println("Result : " + testProgram("progs/sum.a", "-1 1", "0"))
+    println("Result : " + testProgram("progs/sum.a", "0 0", "0"))
+    println("Result : " + testProgram("progs/sum.a", "-1 2", "1"))
+    println("Result : " + testProgram("progs/sum.a", "2 -1", "1"))
+    println("Result : " + testProgram("progs/sum.a", "-3 -2", "-5"))
+
+
+
+//    var filename = "progs/functions.a"
+//
+//    filename = "progs/fib-rec.a"
+//    filename = "progs/power-interactive.a"
+//    filename = "progs/break.a"
+//    filename = "progs/switch.a"
+//
+//    val functionTypes = parseFuncTypes(filename)
+//
+//
+//    val lexer = AlangLexer(ANTLRFileStream(filename))
+//    val parser = AlangParser(CommonTokenStream(lexer))
+//
+//    val walker = ParseTreeWalker();
+//    val listener = AlangListener(functionTypes)
+//    walker.walk(listener, parser.program())
+//    val bytes = getByteCode(listener)
+//
+//
+//    println("run compiled class")
+//    val aClass = ByteCodeLoader.clazz.loadClass(bytes)
+//    val meth = aClass.getMethod("main", Array<String>::class.java)
+//    meth.invoke(null, args)
 }
