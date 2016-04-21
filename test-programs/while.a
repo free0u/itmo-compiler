@@ -1,0 +1,14 @@
+void main() {
+    int c;
+    c = 0;
+    while (true) {
+        c = c + 1;
+        if (c > 10) {
+            break;
+        } else {}
+        if (c % 2 == 1) {
+            continue;
+        } else {}
+        print(c);
+    }
+}

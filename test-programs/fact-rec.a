@@ -1,0 +1,21 @@
+int fact(int n) {
+    if (n == 1) {
+        return 1;
+    } else {
+        return n * fact(n - 1);
+    }
+}
+
+void main() {
+    int n;
+    read(n)
+    int i;
+    i = 0;
+    while (i < n) {
+        i = i + 1;
+        int x;
+        read(x);
+        print(fact(x));
+    }
+}
+

@@ -53,4 +53,19 @@ class ProgramTests {
         assertTrue(testProgram("test-programs/cmp.a", "0 0", "0"))
     }
 
+    @test fun testWhile() {
+        assertTrue(testProgram("test-programs/while.a", "", "2 4 6 8 10"))
+    }
+
+    @test fun testRecFib() {
+        assertTrue(testProgram("test-programs/fib-rec.a", "", "1 1 2 3 5 8 13 21 34 55"))
+    }
+
+    @test fun testRecFact() {
+        assertTrue(testProgram("test-programs/fact-rec.a", "5 1 2 3 4 5", "1 2 6 24 120"))
+    }
+
+
+
+
 }
