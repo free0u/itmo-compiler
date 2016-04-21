@@ -425,12 +425,12 @@ fun parseFuncTypes(filename : String) : HashMap<String, String> {
 
 
 fun main(args: Array<String>) {
-    println("Result : " + testProgram("progs/sum.a", "2 3", "5"))
-    println("Result : " + testProgram("progs/sum.a", "-1 1", "0"))
-    println("Result : " + testProgram("progs/sum.a", "0 0", "0"))
-    println("Result : " + testProgram("progs/sum.a", "-1 2", "1"))
-    println("Result : " + testProgram("progs/sum.a", "2 -1", "1"))
-    println("Result : " + testProgram("progs/sum.a", "-3 -2", "-5"))
+    println("Result : " + testProgram("test-programs/sum.a", "2 3", "5"))
+    println("Result : " + testProgram("test-programs/sum.a", "-1 1", "0"))
+    println("Result : " + testProgram("test-programs/sum.a", "0 0", "0"))
+    println("Result : " + testProgram("test-programs/sum.a", "-1 2", "1"))
+    println("Result : " + testProgram("test-programs/sum.a", "2 -1", "1"))
+    println("Result : " + testProgram("test-programs/sum.a", "-3 -2", "-5"))
 
 
 

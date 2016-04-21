@@ -63,5 +63,13 @@ fun testProgram(programName : String, input : String, expectedOut : String) : Bo
 
     val realOutput = baos.toString("UTF-8")
 
-    return compareOutput(realOutput, expectedOut)
+    val res = compareOutput(realOutput, expectedOut)
+
+    if (!res) {
+        println("Input: $input")
+        println("Expected output: $expectedOut")
+        println("Real output: $realOutput")
+    }
+
+    return res
 }
