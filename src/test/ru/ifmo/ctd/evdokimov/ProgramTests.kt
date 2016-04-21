@@ -21,6 +21,36 @@ class ProgramTests {
         assertTrue(testProgram("test-programs/fast-power.a", "10 0", "1"))
         assertTrue(testProgram("test-programs/fast-power.a", "10 1", "10"))
         assertTrue(testProgram("test-programs/fast-power.a", "10 2", "100"))
-
     }
+
+    @test fun testSwitch() {
+        assertTrue(testProgram("test-programs/switch.a", "1", "20"))
+        assertTrue(testProgram("test-programs/switch.a", "2", "40"))
+        assertTrue(testProgram("test-programs/switch.a", "3", "60"))
+        assertTrue(testProgram("test-programs/switch.a", "4", "80"))
+        assertTrue(testProgram("test-programs/switch.a", "5", "100"))
+        assertTrue(testProgram("test-programs/switch.a", "31", "0"))
+    }
+
+    @test fun testIf() {
+        assertTrue(testProgram("test-programs/if.a", "10", "10"))
+        assertTrue(testProgram("test-programs/if.a", "20", "20"))
+        assertTrue(testProgram("test-programs/if.a", "30", "30"))
+        assertTrue(testProgram("test-programs/if.a", "40", "40"))
+        assertTrue(testProgram("test-programs/if.a", "50", "50"))
+        assertTrue(testProgram("test-programs/if.a", "60", "-1"))
+    }
+
+    @test fun testCmp() {
+        assertTrue(testProgram("test-programs/cmp.a", "1 2", "-1"))
+        assertTrue(testProgram("test-programs/cmp.a", "2 2", "0"))
+        assertTrue(testProgram("test-programs/cmp.a", "2 1", "1"))
+        assertTrue(testProgram("test-programs/cmp.a", "-1 -2", "1"))
+        assertTrue(testProgram("test-programs/cmp.a", "-2 -1", "-1"))
+        assertTrue(testProgram("test-programs/cmp.a", "-2 -2", "0"))
+        assertTrue(testProgram("test-programs/cmp.a", "-2 2", "-1"))
+        assertTrue(testProgram("test-programs/cmp.a", "2 -2", "1"))
+        assertTrue(testProgram("test-programs/cmp.a", "0 0", "0"))
+    }
+
 }

@@ -14,6 +14,9 @@ import java.io.DataOutputStream
 import java.io.FileOutputStream
 import java.util.*
 
+
+var compileCount = 0
+
 fun generateJavaType(typeRaw : String) : String {
     var type = "("
     for (i in typeRaw.substring(1)) {
@@ -31,7 +34,7 @@ fun getByteCode(listener: AlangListener) : ByteArray {
     val globalVarNames = listener.globalVarNames
     val globalVarTypes = listener.globalVarTypes
 
-    var className = "Main" + ((Math.random() * 1000).toInt())
+    var className = "Main" + (compileCount++)
 
     fun loadFromVarToStack(mv : MethodVisitor, idx : Int) {
         if (idx < 0) {

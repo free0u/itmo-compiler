@@ -44,7 +44,7 @@ void main() {
 
 Some details:
 
-1. The language have `void`, `int`, `bool` types
+1. The language has `void`, `int`, `bool` types
 2. There are only global var declarations and function declarations at top level. Global vars go first.
 2. Entry point - `main` function
 3. `else` branch in `if` is required
