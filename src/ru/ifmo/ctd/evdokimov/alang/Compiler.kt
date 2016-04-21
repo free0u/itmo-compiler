@@ -1,5 +1,6 @@
 package ru.ifmo.ctd.evdokimov.alang
 
+import main.ru.ifmo.ctd.evdokimov.alang.testProgram
 import org.antlr.v4.runtime.ANTLRFileStream
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTreeWalker
@@ -10,10 +11,8 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes.*
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangLexer
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangParser
-import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.io.FileOutputStream
-import java.io.PrintStream
 import java.util.*
 
 fun generateJavaType(typeRaw : String) : String {
@@ -423,41 +422,7 @@ fun parseFuncTypes(filename : String) : HashMap<String, String> {
     return funcListener.functionTypes
 }
 
-fun testProgram(programName : String, input : String, expectedOutput: String) : Boolean {
 
-    val functionTypes = parseFuncTypes(programName)
-
-
-    val lexer = AlangLexer(ANTLRFileStream(programName))
-    val parser = AlangParser(CommonTokenStream(lexer))
-
-    val walker = ParseTreeWalker();
-    val listener = AlangListener(functionTypes)
-    walker.walk(listener, parser.program())
-    val bytes = getByteCode(listener)
-
-
-    println("run compiled class")
-    val aClass = ByteCodeLoader.clazz.loadClass(bytes)
-    val meth = aClass.getMethod("main", Array<String>::class.java)
-    val arr : Array<String> = arrayOf()
-
-
-    val oldOut = System.out
-
-    val baos = ByteArrayOutputStream()
-    val outputStream = PrintStream(baos)
-    System.setIn(input.byteInputStream())
-    System.setOut(outputStream)
-
-    meth.invoke(null, arr)
-
-    System.setOut(oldOut)
-
-    val realOutput = baos.toString("UTF-8").trim()
-
-    return realOutput.equals(expectedOutput)
-}
 
 fun main(args: Array<String>) {
     println("Result : " + testProgram("progs/sum.a", "2 3", "5"))
