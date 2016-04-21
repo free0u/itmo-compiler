@@ -1,14 +1,10 @@
-package main.ru.ifmo.ctd.evdokimov.alang
+package ru.ifmo.ctd.evdokimov.alang
 
 import org.antlr.v4.runtime.ANTLRFileStream
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTreeWalker
-import ru.ifmo.ctd.evdokimov.alang.AlangListener
-import ru.ifmo.ctd.evdokimov.alang.ByteCodeLoader
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangLexer
 import ru.ifmo.ctd.evdokimov.alang.antlr.AlangParser
-import ru.ifmo.ctd.evdokimov.alang.getByteCode
-import ru.ifmo.ctd.evdokimov.alang.parseFuncTypes
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.util.*

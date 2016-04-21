@@ -1,6 +1,6 @@
 package ru.ifmo.ctd.evdokimov
 
-import main.ru.ifmo.ctd.evdokimov.alang.testProgram
+import ru.ifmo.ctd.evdokimov.alang.testProgram
 import kotlin.test.assertTrue
 import org.junit.Test as test
 
