@@ -1,6 +1,5 @@
 package ru.ifmo.ctd.evdokimov.alang
 
-import main.ru.ifmo.ctd.evdokimov.alang.testProgram
 import org.antlr.v4.runtime.ANTLRFileStream
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTreeWalker
@@ -425,36 +424,21 @@ fun parseFuncTypes(filename : String) : HashMap<String, String> {
 
 
 fun main(args: Array<String>) {
-    println("Result : " + testProgram("test-programs/sum.a", "2 3", "5"))
-    println("Result : " + testProgram("test-programs/sum.a", "-1 1", "0"))
-    println("Result : " + testProgram("test-programs/sum.a", "0 0", "0"))
-    println("Result : " + testProgram("test-programs/sum.a", "-1 2", "1"))
-    println("Result : " + testProgram("test-programs/sum.a", "2 -1", "1"))
-    println("Result : " + testProgram("test-programs/sum.a", "-3 -2", "-5"))
+    var filename = args[0]
+
+    val functionTypes = parseFuncTypes(filename)
+
+    val lexer = AlangLexer(ANTLRFileStream(filename))
+    val parser = AlangParser(CommonTokenStream(lexer))
+
+    val walker = ParseTreeWalker();
+    val listener = AlangListener(functionTypes)
+    walker.walk(listener, parser.program())
+    val bytes = getByteCode(listener)
 
 
-
-//    var filename = "progs/functions.a"
-//
-//    filename = "progs/fib-rec.a"
-//    filename = "progs/power-interactive.a"
-//    filename = "progs/break.a"
-//    filename = "progs/switch.a"
-//
-//    val functionTypes = parseFuncTypes(filename)
-//
-//
-//    val lexer = AlangLexer(ANTLRFileStream(filename))
-//    val parser = AlangParser(CommonTokenStream(lexer))
-//
-//    val walker = ParseTreeWalker();
-//    val listener = AlangListener(functionTypes)
-//    walker.walk(listener, parser.program())
-//    val bytes = getByteCode(listener)
-//
-//
-//    println("run compiled class")
-//    val aClass = ByteCodeLoader.clazz.loadClass(bytes)
-//    val meth = aClass.getMethod("main", Array<String>::class.java)
-//    meth.invoke(null, args)
+    println("run compiled class")
+    val aClass = ByteCodeLoader.clazz.loadClass(bytes)
+    val meth = aClass.getMethod("main", Array<String>::class.java)
+    meth.invoke(null, args)
 }

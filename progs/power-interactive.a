@@ -16,8 +16,6 @@ int power(int n, int k) { // n^k
 }
 
 void main() {
-    bool f;
-    f = true;
     while(f) {
         int n;
         int k;
@@ -25,7 +23,7 @@ void main() {
         read(k);
         if (n == -1 && k == -1) {
             print(callCounter);
-            f = false;
+            break;
         } else {
             print(power(n, k));
         }

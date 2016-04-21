@@ -23,6 +23,4 @@ class ProgramTests {
         assertTrue(testProgram("test-programs/fast-power.a", "10 2", "100"))
 
     }
-
-
 }
